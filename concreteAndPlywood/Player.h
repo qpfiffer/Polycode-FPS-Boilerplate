@@ -15,14 +15,14 @@ namespace PlayerSpace {
         ~Player();
 
         void update();
-        void handleInput(CoreInput *input);
+        void handleInput(CoreInput *input, ScreenLabel *deltaText);
         Vector2 getRotation();
     private:
         void rotateCamera(Vector2 *mouseDifference, float amount);
         void addToCameraPosition(Vector3 *toAdd);
 
         Vector3 position;
-        Vector2 oldMousePos;
+        Vector2 oldDelta;
         float leftRightRot;
         float upDownRot;
         Camera *defaultCamera;

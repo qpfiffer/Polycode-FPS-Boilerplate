@@ -1,10 +1,11 @@
 #include "Player.h"
+#include <sstream>
 
 using namespace PlayerSpace;
 using namespace ToolBox;
 
 Player::Player(Camera *defaultCamera): 
-    position(Vector3(0,0.5,0)), oldMousePos(Vector2(0,0)), 
+    position(Vector3(0,0.5,0)), oldDelta(Vector2(0,0)), 
     leftRightRot(0.0f), upDownRot(0.0f), defaultCamera(defaultCamera)
 {
 }
@@ -19,7 +20,7 @@ void Player::update() {
 }
 
 void Player::rotateCamera(Vector2 *mouseDifference, float amount)  {
-    this->leftRightRot -= rotationSpeed * mouseDifference->x * amount;
+    this->leftRightRot += rotationSpeed * mouseDifference->x * amount;
     if (leftRightRot > 360.0f)
         leftRightRot -= (float)(360.0f);
     else if (leftRightRot < -(360.0f))
@@ -28,7 +29,7 @@ void Player::rotateCamera(Vector2 *mouseDifference, float amount)  {
     if (upDownRot - (rotationSpeed * mouseDifference->y * amount) < 90.0f &&
         upDownRot - (rotationSpeed * mouseDifference->y * amount) > -(90.0f))
     {
-        upDownRot -= rotationSpeed * mouseDifference->y * amount;
+        upDownRot += rotationSpeed * mouseDifference->y * amount;
     }
 
     this->defaultCamera->setYaw(-this->leftRightRot);
@@ -52,15 +53,26 @@ void Player::addToCameraPosition(Vector3 *toAdd) {
     this->defaultCamera->setPosition(position);
 }
 
-void Player::handleInput(CoreInput *input) {
+void Player::handleInput(CoreInput *input, ScreenLabel *deltaText) {
     // Put these up here to avoid CS2360.
     Vector2 delta;
     Vector3 moveVector;
 
     Vector2 curMousePos = input->getMousePosition();
-    delta = ToolBox::subtract(curMousePos, this->oldMousePos);
-    //delta = input->getMouseDelta();
-    this->oldMousePos = curMousePos;
+    //delta = ToolBox::subtract(curMousePos, this->oldMousePos);
+    delta = input->getMouseDelta();
+
+#ifdef _DEBUG
+    stringstream ss;
+    ss << "Delta X: " << delta.x << " Delta y: " << delta.y;
+    deltaText->setText(ss.str());
+#endif
+    if (delta != oldDelta)
+        this->rotateCamera(&delta, 1.0f);
+
+    // Make sure we do this after rotation, so that our
+    // sanity check passes.
+    this->oldDelta = delta;
 
     if (ToolBox::abs(delta.x) > 300.0f)
         return;
@@ -86,9 +98,7 @@ void Player::handleInput(CoreInput *input) {
         moveVector += Vector3(-1, 0, 0);
     }
     
-    
     this->addToCameraPosition(&moveVector);
-    this->rotateCamera(&delta, 1.0f);
 }
 
 Vector2 Player::getRotation() {

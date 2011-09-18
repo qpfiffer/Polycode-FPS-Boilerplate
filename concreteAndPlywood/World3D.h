@@ -24,6 +24,7 @@ private:
     
     SceneLight *flashLight, *pLight;
     ScreenLabel *rotationText, *rotationTextDos, *fps;
+    ScreenLabel *deltaText;
     ScenePrimitive *ground, *box;
     Player *mPlayer;
 };

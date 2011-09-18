@@ -14,7 +14,7 @@ World3D::World3D(PolycodeView *view) {
     //core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
     //core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
     core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
-    //core->enableMouse(false);
+    core->enableMouse(false);
 
     scene = new Scene();
 
@@ -28,10 +28,13 @@ World3D::World3D(PolycodeView *view) {
     rotationTextDos->setPosition(0, 15, 0);
     fps = new ScreenLabel("NOTHING", 12);
     fps->setPosition(0, 30, 0);
+    deltaText = new ScreenLabel("NOTHING", 12);
+    deltaText->setPosition(0,45,0);
 
     screen->addChild(rotationText);
     screen->addChild(rotationTextDos);
     screen->addChild(fps);
+    screen->addChild(deltaText);
 
     flashLight = new SceneLight(SceneLight::SPOT_LIGHT, scene, 3);
     pLight = new SceneLight(SceneLight::AREA_LIGHT, scene, 6);
@@ -49,6 +52,9 @@ World3D::~World3D() {
 
     // Text:
     delete rotationText;
+    delete rotationTextDos;
+    delete fps;
+    delete deltaText;
     delete screen;
 
     // Man items
@@ -69,7 +75,11 @@ bool World3D::update() {
     ss << "FPS: " << core->getFPS();
     this->fps->setText(ss.str());
 
-    this->mPlayer->handleInput(core->getInput());
+    this->mPlayer->handleInput(core->getInput(), deltaText);
+
+#ifdef WIN32
+    SetCursorPos(core->getXRes(), core->getYRes());
+#endif
 
     return core->Update();
 }
