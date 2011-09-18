@@ -18,8 +18,8 @@ World3D::World3D(PolycodeView *view) {
 
     scene = new Scene();
 
-    ground = new ScenePrimitive(ScenePrimitive::TYPE_PLANE, 60, 60);
-    box = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1, 1, 1);
+    prims = new list<ScenePrimitive *>;
+
     mPlayer = new Player(scene->getDefaultCamera());
 
     screen = new Screen();
@@ -44,8 +44,7 @@ World3D::World3D(PolycodeView *view) {
 
 World3D::~World3D() {
     // Items in scene:
-    delete ground;
-    delete box;
+    this->prims->clear();
     delete flashLight;
     delete pLight;
     delete mPlayer;
@@ -77,19 +76,32 @@ bool World3D::update() {
 
     this->mPlayer->handleInput(core->getInput(), deltaText);
 
-#ifdef WIN32
-    SetCursorPos(core->getXRes(), core->getYRes());
-#endif
+//#ifdef WIN32
+//    SetCursorPos(core->getXRes(), core->getYRes());
+//#endif
 
     return core->Update();
 }
 
 void World3D::setupWorld() {
+
+    /*for (int i = 0; i<4; i++) {
+        for (int j = 0; j<4; j++) {
+            ScenePrimitive *groundTile = new ScenePrimitive(ScenePrimitive::TYPE_PLANE, 5,5);
+            groundTile->setMaterialByName("GroundMaterial");
+            groundTile->setPosition(i*5, 0, j*5);
+            scene->addEntity(groundTile);
+
+            prims->push_back(groundTile);
+        }
+    }*/
+    ScenePrimitive *ground = new ScenePrimitive(ScenePrimitive::TYPE_PLANE, 60, 60);
     ground->setMaterialByName("GroundMaterial");
     scene->addEntity(ground);
-
-    box->setMaterialByName("CubeMaterial");
-    scene->addEntity(box);
+    prims->push_back(ground);
+    
+    /*box->setMaterialByName("CubeMaterial");
+    scene->addEntity(box);*/
 
     pLight->setPosition(0,3,0);
     scene->addLight(pLight);

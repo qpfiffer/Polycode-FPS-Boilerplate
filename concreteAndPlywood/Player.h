@@ -7,7 +7,7 @@ using namespace ToolBox;
 
 namespace PlayerSpace {
     const float rotationSpeed = 0.3f;
-    const Number moveSpeed = 0.1;
+    const Number moveSpeed = 0.05;
 
     class Player {
     public:

@@ -2,6 +2,7 @@
 #include "Polycode.h"
 #include "PolycodeView.h"
 #include "Player.h"
+#include <list>
 
 using namespace Polycode;
 using namespace PlayerSpace;
@@ -25,6 +26,8 @@ private:
     SceneLight *flashLight, *pLight;
     ScreenLabel *rotationText, *rotationTextDos, *fps;
     ScreenLabel *deltaText;
-    ScenePrimitive *ground, *box;
     Player *mPlayer;
+
+    // All of the primitives in the scene:
+    list<ScenePrimitive *> *prims;
 };

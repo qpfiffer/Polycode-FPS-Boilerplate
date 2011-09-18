@@ -11,7 +11,7 @@
 		<material name="GroundMaterial">
 			<shader type="fixed">
 				<textures>
-					<texture name="diffuse">SHUT_UP.png</texture>
+					<texture name="diffuse">GRASS.png</texture>
 				</textures>
 			</shader>
 		</material>					
