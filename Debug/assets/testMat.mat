@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<polycode>	
+	<materials>
+		<material name="CubeMaterial">
+			<shader type="fixed">
+				<textures>
+					<texture name="diffuse">SHUT_UP.png</texture>
+				</textures>
+			</shader>
+		</material>			
+		<material name="GroundMaterial">
+			<shader type="fixed">
+				<textures>
+					<texture name="diffuse">SHUT_UP.png</texture>
+				</textures>
+			</shader>
+		</material>					
+	</materials>
+</polycode>
