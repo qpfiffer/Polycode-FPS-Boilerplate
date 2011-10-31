@@ -19,9 +19,14 @@ private:
     void handleEvent(Event *e);
     void handleInput(InputEvent *e);
 
+    PolycodeView *view;
+
+    Vector2 mouseState;
+
     Core *core;
     Scene *scene;
     Screen *screen;
+    Sound *ambientSound;
     
     SceneLight *flashLight, *pLight;
     ScreenLabel *rotationText, *rotationTextDos, *fps;
@@ -30,4 +35,5 @@ private:
 
     // All of the primitives in the scene:
     list<ScenePrimitive *> *prims;
+    list<SceneMesh *> *meshes;
 };

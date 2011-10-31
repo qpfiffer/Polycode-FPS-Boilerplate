@@ -29,7 +29,7 @@ float ToolBox::abs(float input) {
     return input;
 }
 
-Matrix4 ToolBox::CreateRotationX(float degrees) {
+Matrix4 ToolBox::CreateRotationY(float degrees) {
     float c = cos(degrees);
     float s = sin(degrees);
     Matrix4 *toReturn = new Matrix4(
@@ -41,7 +41,7 @@ Matrix4 ToolBox::CreateRotationX(float degrees) {
     return *toReturn;
 }
 
-Matrix4 ToolBox::CreateRotationY(float degrees) {
+Matrix4 ToolBox::CreateRotationX(float degrees) {
     float c = cos(degrees);
     float s = sin(degrees);
     Matrix4 *toReturn = new Matrix4(

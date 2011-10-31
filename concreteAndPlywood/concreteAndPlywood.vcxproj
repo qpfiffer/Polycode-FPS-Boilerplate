@@ -39,8 +39,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\Code\egb_polycode\Framework\Dependencies\Include;D:\Code\egb_polycode\Framework\Core\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Code\egb_polycode\Framework\Dependencies\Lib\Debug;D:\Code\egb_polycode\Framework\Core\Lib\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Code\egb_polycode\Framework\Dependencies\Include;D:\Code\egb_polycode\Framework\Core\Include;C:\Users\quinlan\Desktop\code\quel_solaar\Forge;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Code\egb_polycode\Forge\Debug;D:\Code\egb_polycode\Framework\Dependencies\Lib\Debug;D:\Code\egb_polycode\Framework\Core\Lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

@@ -5,7 +5,7 @@ using namespace PlayerSpace;
 using namespace ToolBox;
 
 Player::Player(Camera *defaultCamera): 
-    position(Vector3(0,0.5,0)), oldDelta(Vector2(0,0)), 
+    didRotate(false), position(Vector3(0,0.8,0)), oldMousePos(Vector2(0,0)), 
     leftRightRot(0.0f), upDownRot(0.0f), defaultCamera(defaultCamera)
 {
 }
@@ -20,16 +20,16 @@ void Player::update() {
 }
 
 void Player::rotateCamera(Vector2 *mouseDifference, float amount)  {
-    this->leftRightRot += rotationSpeed * mouseDifference->x * amount;
+    this->leftRightRot -= rotationSpeed * mouseDifference->x;
     if (leftRightRot > 360.0f)
         leftRightRot -= (float)(360.0f);
     else if (leftRightRot < -(360.0f))
         leftRightRot += (float)(360.0f);
 
-    if (upDownRot - (rotationSpeed * mouseDifference->y * amount) < 90.0f &&
-        upDownRot - (rotationSpeed * mouseDifference->y * amount) > -(90.0f))
+    if (upDownRot - (rotationSpeed * mouseDifference->y) < 90.0f &&
+        upDownRot - (rotationSpeed * mouseDifference->y) > -(90.0f))
     {
-        upDownRot += rotationSpeed * mouseDifference->y * amount;
+        upDownRot -= rotationSpeed * mouseDifference->y;
     }
 
     this->defaultCamera->setYaw(-this->leftRightRot);
@@ -42,8 +42,8 @@ void Player::addToCameraPosition(Vector3 *toAdd) {
 
     Matrix4 cameraRotation;
 
-    cameraRotation = ToolBox::CreateRotationX(ToolBox::ToRadians(leftRightRot)) *
-        ToolBox::CreateRotationY(0.0f);
+    cameraRotation = ToolBox::CreateRotationY(ToolBox::ToRadians(leftRightRot)) *
+        ToolBox::CreateRotationX(0.0f);
 
     //Vector3 rotatedVector = Vector3.Transform(vectorToAdd, cameraRotation);
     Vector3 rotatedVector = cameraRotation.rotateVector(*toAdd);
@@ -53,32 +53,9 @@ void Player::addToCameraPosition(Vector3 *toAdd) {
     this->defaultCamera->setPosition(position);
 }
 
-void Player::handleInput(CoreInput *input, ScreenLabel *deltaText) {
-    // Put these up here to avoid CS2360.
-    Vector2 delta;
+void Player::pollKeyboardInput(CoreInput *input) {
     Vector3 moveVector;
-
-    Vector2 curMousePos = input->getMousePosition();
-    //delta = ToolBox::subtract(curMousePos, this->oldMousePos);
-    delta = input->getMouseDelta();
-
-#ifdef _DEBUG
-    stringstream ss;
-    ss << "Delta X: " << delta.x << " Delta y: " << delta.y;
-    deltaText->setText(ss.str());
-#endif
-    if (delta != oldDelta)
-        this->rotateCamera(&delta, 1.0f);
-
-    // Make sure we do this after rotation, so that our
-    // sanity check passes.
-    this->oldDelta = delta;
-
-    if (ToolBox::abs(delta.x) > 300.0f)
-        return;
-    else if (ToolBox::abs(delta.y) > 300.0f)
-        return;
-
+    
     moveVector = Vector3(0,0,0);
     if (input->getKeyState(KEY_w))
     {
@@ -99,6 +76,28 @@ void Player::handleInput(CoreInput *input, ScreenLabel *deltaText) {
     }
     
     this->addToCameraPosition(&moveVector);
+}
+
+void Player::handleMouseInput(InputEvent *e) {
+    // Put these up here to avoid CS2360.
+    Vector2 delta;
+
+    Vector2 curMousePos = e->getMousePosition();
+    //delta = ToolBox::subtract(curMousePos, this->oldMousePos);
+#ifdef _DEBUG
+    /*stringstream ss;
+    ss << "Delta X: " << delta.x << " Delta y: " << delta.y;
+    deltaText->setText(ss.str());*/
+#endif
+    //if (delta.x != 0 && delta.y != 0)
+    this->rotateCamera(&delta, 1.0f);
+
+    this->oldMousePos = e->getMousePosition();
+
+    /*if (ToolBox::abs(delta.x) > 300.0f)
+        return;
+    else if (ToolBox::abs(delta.y) > 300.0f)
+        return;*/
 }
 
 Vector2 Player::getRotation() {

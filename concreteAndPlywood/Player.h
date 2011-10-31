@@ -7,7 +7,7 @@ using namespace ToolBox;
 
 namespace PlayerSpace {
     const float rotationSpeed = 0.3f;
-    const Number moveSpeed = 0.05;
+    const Number moveSpeed = 0.025;
 
     class Player {
     public:
@@ -15,14 +15,17 @@ namespace PlayerSpace {
         ~Player();
 
         void update();
-        void handleInput(CoreInput *input, ScreenLabel *deltaText);
+        void pollKeyboardInput(CoreInput *input);
+        void handleMouseInput(InputEvent *e);
         Vector2 getRotation();
     private:
         void rotateCamera(Vector2 *mouseDifference, float amount);
         void addToCameraPosition(Vector3 *toAdd);
 
+        bool didRotate;
+
         Vector3 position;
-        Vector2 oldDelta;
+        Vector2 oldMousePos;
         float leftRightRot;
         float upDownRot;
         Camera *defaultCamera;
